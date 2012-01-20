@@ -26,6 +26,8 @@ public class Screen {
 		
 		bitmap = bitmapFactory.create(width, height, BitmapFactory.OPAGUE);
 		canvas = canvasFactory.create(bitmap);
+		
+		canvas.clearRect(0, 0, width, height);
 	}
 	
 	public void render() {
