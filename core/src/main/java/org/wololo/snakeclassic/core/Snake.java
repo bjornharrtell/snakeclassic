@@ -1,6 +1,6 @@
 package org.wololo.snakeclassic.core;
 
-import java.util.ArrayDeque;
+import java.util.LinkedList;
 
 public class Snake {
 
@@ -11,7 +11,7 @@ public class Snake {
 
 	Game game;
 	public Coordinate position;
-	ArrayDeque<Coordinate> positions = new ArrayDeque<Coordinate>();
+	LinkedList<Coordinate> positions = new LinkedList<Coordinate>();
 
 	public int direction = DIR_RIGHT;
 	int length = 20;
@@ -25,7 +25,7 @@ public class Snake {
 		this.game = game;
 		this.position = position;
 
-		positions.push(position.clone());
+		positions.add(position.clone());
 
 		game.getCell(position).occupied = true;
 	}
@@ -62,10 +62,10 @@ public class Snake {
 					alive = false;
 				} else {
 					cell.occupied = true;
-					positions.push(position.clone());
+					positions.add(position.clone());
 
 					if (positions.size() == length) {
-						game.getCell(positions.removeLast()).occupied = false;
+						game.getCell(positions.removeFirst()).occupied = false;
 					}
 				}
 			}
@@ -107,5 +107,20 @@ public class Snake {
 			break;
 		}
 	}
+	
+	public void up() {
+		direction = DIR_UP;
+	}
+	public void down() {
+		direction = DIR_DOWN;
+	}
+	public void right() {
+		direction = DIR_RIGHT;
+	}
+	public void left() {
+		direction = DIR_LEFT;
+	}
+	
+	
 
 }
