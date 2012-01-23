@@ -16,13 +16,15 @@ import org.wololo.snakeclassic.vmlayer.BitmapFactory;
 import org.wololo.snakeclassic.vmlayer.CanvasFactory;
 import org.wololo.snakeclassic.vmlayer.VMContext;
 
-public class Client extends Canvas implements MouseListener,
+public class Client extends Canvas implements MouseListener, Runnable,
 		VMContext {
 
 	private static final long serialVersionUID = 1L;
 	
 	static int screenWidth = 640;
 	static int screenHeight = 480;
+	
+	static Game game;
 
 	public static void main(String[] args) {
 		Client client = new Client();
@@ -41,11 +43,13 @@ public class Client extends Canvas implements MouseListener,
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		
-		frame.addMouseListener(client);
+		client.addMouseListener(client);
 
 		frame.setVisible(true);
+		
+		game = new Game(client);
 
-		new Thread(new Game(client)).start();
+		new Thread(client).start();
 	}
 
 	public void render(Object bitmap) {
@@ -90,9 +94,8 @@ public class Client extends Canvas implements MouseListener,
 	}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void mousePressed(MouseEvent e) {
+		game.click(e.getX(), e.getY());
 	}
 
 	@Override
@@ -109,6 +112,11 @@ public class Client extends Canvas implements MouseListener,
 	@Override
 	public int getScreenHeight() {
 		return screenHeight;
+	}
+
+	@Override
+	public void run() {
+		game.run();
 	}
 
 }

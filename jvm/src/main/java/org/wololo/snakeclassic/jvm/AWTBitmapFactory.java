@@ -14,8 +14,7 @@ public class AWTBitmapFactory implements BitmapFactory {
 	static final GraphicsConfiguration gc = gs.getDefaultConfiguration();
 
 	public Object create(int width, int height, int bitmapType) {
-		return gc.createCompatibleImage(width, height,
-				parseBitmapType(bitmapType));
+		return gc.createCompatibleImage(width, height, parseBitmapType(bitmapType));
 	}
 
 	int parseBitmapType(int bitmapType) {

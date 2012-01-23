@@ -8,8 +8,16 @@ public class Coordinate {
 		setTo(x, y);
 	}
 	
-	void setTo(int x, int y) {
+	public void setTo(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+	
+	public void setTo(Coordinate coordinate) {
+		setTo(coordinate.x, coordinate.y);
+	}
+	
+	public Coordinate clone() {
+		return new Coordinate(x, y);
 	}
 }
