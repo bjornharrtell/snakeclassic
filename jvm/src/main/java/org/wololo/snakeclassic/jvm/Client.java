@@ -50,7 +50,7 @@ public class Client extends Canvas implements MouseListener, KeyListener,
 
 		frame.setVisible(true);
 
-		game = new Game(client);
+		game = new Game(client, 0);
 
 		new Thread(client).start();
 	}
@@ -117,10 +117,7 @@ public class Client extends Canvas implements MouseListener, KeyListener,
 			game.left();
 			break;
 		case KeyEvent.VK_SPACE:
-			if (!game.paused)
-				game.pause();
-			else
-				game.unpause();
+			game.pause();
 			break;
 		}
 	}

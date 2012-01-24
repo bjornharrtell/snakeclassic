@@ -14,9 +14,10 @@ public class Snake {
 	LinkedList<Coordinate> positions = new LinkedList<Coordinate>();
 
 	public int direction = DIR_RIGHT;
-	int length = 20;
+	int length = 15;
+	public int score = 0;
 
-	static public final int INITIAL_SPEED = 20;
+	static public final int INITIAL_SPEED = 15;
 	int speedCounter = INITIAL_SPEED;
 
 	public boolean alive = true;
@@ -27,11 +28,16 @@ public class Snake {
 
 		positions.add(position.clone());
 
+		Cell cell = game.getCell(position);
 		game.getCell(position).occupied = true;
+		cell.dirty = true;
 	}
 
 	public void tick() {
 		if (--speedCounter == 0) {
+
+			tickTail();
+
 			switch (direction) {
 			case DIR_UP:
 				position.y--;
@@ -53,24 +59,54 @@ public class Snake {
 			} else {
 				Cell cell = game.getCell(position);
 
+				score++;
+
 				if (cell.snack) {
-					length += 10;
+					length += 30;
 					cell.snack = false;
+					cell.dirty = true;
+					score += 20*game.level*2;
 				}
 
 				if (cell.occupied) {
 					alive = false;
 				} else {
 					cell.occupied = true;
-					positions.add(position.clone());
-
-					if (positions.size() == length) {
-						game.getCell(positions.removeFirst()).occupied = false;
-					}
+					cell.dirty = true;
 				}
 			}
 
 			speedCounter = INITIAL_SPEED - game.level;
+		}
+	}
+
+	/*public void tickMenu() {
+		tickTail();
+
+		float xf = 0.2f;
+		float yf = 0.4f;
+		
+		if (position.x < game.width - game.width * xf && position.y <= game.height * yf) {
+			position.x++;
+		} else if (position.y < game.height - game.height * yf && position.x >= game.width - game.width * xf ) {
+			position.y++;
+		} else if (position.x >= game.width * xf && position.y >= game.height * yf) {
+			position.x--;
+		} else if (position.y > game.height * yf) {
+			position.y--;
+		}
+
+		Cell cell = game.getCell(position);
+
+		cell.occupied = true;
+	}*/
+
+	void tickTail() {
+		positions.add(position.clone());
+		if (positions.size() == length) {
+			Cell cell = game.getCell(positions.removeFirst());
+			cell.occupied = false;
+			cell.dirty = true;
 		}
 	}
 
@@ -107,20 +143,21 @@ public class Snake {
 			break;
 		}
 	}
-	
+
 	public void up() {
 		direction = DIR_UP;
 	}
+
 	public void down() {
 		direction = DIR_DOWN;
 	}
+
 	public void right() {
 		direction = DIR_RIGHT;
 	}
+
 	public void left() {
 		direction = DIR_LEFT;
 	}
-	
-	
 
 }

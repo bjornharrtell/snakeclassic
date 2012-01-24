@@ -6,6 +6,7 @@ import org.wololo.snakeclassic.vmlayer.CanvasFactory;
 import org.wololo.snakeclassic.vmlayer.VMContext;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
@@ -17,19 +18,29 @@ import android.view.View.OnTouchListener;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		OnTouchListener, VMContext {
 
+	Context context;
+
 	public Game game;
 
 	public Thread thread;
 
 	public SurfaceHolder surfaceHolder;
 
+	public static final String PREFS_NAME = "SnakeClassicPrefrences";
+
 	GameView(Context context) {
 		super(context);
+
+		this.context = context;
 
 		surfaceHolder = getHolder();
 		surfaceHolder.addCallback(this);
 
-		game = new Game(this);
+		SharedPreferences settings = context
+				.getSharedPreferences(PREFS_NAME, 0);
+		int highscore = settings.getInt("highscore", 0);
+
+		game = new Game(this, highscore);
 
 		setFocusable(true);
 		setOnTouchListener(this);
@@ -37,13 +48,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	@Override
 	public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {
-		System.out.println("surfaceChanged");
 	}
 
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
-		System.out.println("surfaceCreated");
-
 		thread = new Thread() {
 			@Override
 			public void run() {
@@ -57,7 +65,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
-		System.out.println("surfaceDestroyed");
 		boolean retry = true;
 		game.running = false;
 		while (retry) {
@@ -71,8 +78,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	@Override
 	public boolean onTouch(View v, MotionEvent e) {
-		System.out.println("onTouch");
-
 		int action = e.getAction();
 
 		if (action == MotionEvent.ACTION_CANCEL)
@@ -108,11 +113,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	}
 
 	void doClick(int x, int y) {
-		if (game.paused) {
-			game.unpause();
-		} else {
-			game.click(x, y);
-		}
+		game.click(x, y);
 	}
 
 	@Override
@@ -146,5 +147,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	@Override
 	public int getScreenHeight() {
 		return getHeight();
+	}
+
+	public void saveHighscore() {
+		SharedPreferences settings = context
+				.getSharedPreferences(PREFS_NAME, 0);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putInt("highscore", game.highscore);
+		editor.commit();
 	}
 }
