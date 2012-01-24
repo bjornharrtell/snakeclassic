@@ -28,11 +28,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	public static final String PREFS_NAME = "SnakeClassicPrefrences";
 
-	GameView(Context context) {
+	int bottomOffset;
+	
+	GameView(Context context, int bottomOffset) {
 		super(context);
 
 		this.context = context;
-
+		this.bottomOffset = bottomOffset;
+		
 		surfaceHolder = getHolder();
 		surfaceHolder.addCallback(this);
 
@@ -40,7 +43,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 				.getSharedPreferences(PREFS_NAME, 0);
 		int highscore = settings.getInt("highscore", 0);
 
-		game = new Game(this, highscore);
+		game = new Game(this, highscore, bottomOffset);
 
 		setFocusable(true);
 		setOnTouchListener(this);

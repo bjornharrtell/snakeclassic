@@ -35,14 +35,17 @@ public class Game {
 	public int level;
 
 	public int highscore;
+	
+	int bottomOffset;
 
-	public Game(VMContext vmContext, int highscore) {
+	public Game(VMContext vmContext, int highscore, int bottomOffset) {
 		this.vmContext = vmContext;
 		this.highscore = highscore;
+		this.bottomOffset = bottomOffset;
 	}
 
 	void init() {
-		screen = new Screen(this);
+		screen = new Screen(this, bottomOffset);
 		if (screen.width > screen.height) {
 			width = 60;
 		} else {
@@ -131,7 +134,7 @@ public class Game {
 
 			if (System.currentTimeMillis() - lastTimer1 > 1000) {
 				lastTimer1 += 1000;
-				System.out.println(ticks + " ticks, " + frames + " fps");
+				//System.out.println(ticks + " ticks, " + frames + " fps");
 				frames = 0;
 				ticks = 0;
 			}

@@ -22,12 +22,12 @@ public class Screen {
 	private int scoreCache = -1;
 	private int levelCache = -1;
 
-	public Screen(Game game) {
+	public Screen(Game game, int bottomOffset) {
 		this.game = game;
 		bitmapFactory = game.vmContext.createBitmapFactory();
 		canvasFactory = game.vmContext.createCanvasFactory();
 		width = game.vmContext.getScreenWidth();
-		height = game.vmContext.getScreenHeight();
+		height = game.vmContext.getScreenHeight() - bottomOffset;
 
 		bitmap = bitmapFactory.create(width, height, BitmapFactory.OPAGUE);
 		canvas = canvasFactory.create(bitmap);
@@ -113,6 +113,9 @@ public class Screen {
 
 		canvas.drawTextCenter(width / 2, height / 2 + game.tileSize * 6,
 				(int) (game.tileSize * 1.5f), "Touch to start a new game");
+		
+		canvas.drawTextCenter(width / 2, height / 2 + game.tileSize * 8,
+				(int) (game.tileSize), "In game, touch left/right side of screen to steer");
 	}
 
 	void renderGameover() {
