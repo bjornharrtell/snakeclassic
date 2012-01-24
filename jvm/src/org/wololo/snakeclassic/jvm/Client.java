@@ -50,7 +50,7 @@ public class Client extends Canvas implements MouseListener, KeyListener,
 
 		frame.setVisible(true);
 
-		game = new Game(client, 0);
+		game = new Game(client, 0, 0);
 
 		new Thread(client).start();
 	}
