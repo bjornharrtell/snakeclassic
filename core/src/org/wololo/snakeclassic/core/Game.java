@@ -6,9 +6,9 @@ import org.wololo.snakeclassic.vmlayer.VMContext;
 public class Game {
 	public VMContext vmContext;
 
-	int levelticksThreshold;
-	int levelticks;
-	int snackticks;
+	int levelticksThreshold = 100;
+	int levelticks = 0;
+	int snackticks = 0;
 
 	boolean inited = false;
 
@@ -81,9 +81,6 @@ public class Game {
 
 	void initgame() {
 		level = 0;
-		levelticksThreshold = 100;
-		levelticks = 0;
-		snackticks = 0;
 
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
