@@ -83,11 +83,12 @@ public class Game {
 		level = 0;
 		levelticksThreshold = 100;
 		levelticks = 0;
-		snackticks = 0;
+		snackticks = 600;
 
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				grid[y * width + x].occupied = false;
+				grid[y * width + x].snack = false;
 				grid[y * width + x].dirty = true;
 			}
 		}
