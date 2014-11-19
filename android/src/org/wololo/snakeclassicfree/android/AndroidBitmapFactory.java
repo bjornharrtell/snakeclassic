@@ -1,4 +1,4 @@
-package org.wololo.snakeclassic.android;
+package org.wololo.snakeclassicfree.android;
 
 import org.wololo.snakeclassic.vmlayer.BitmapFactory;
 

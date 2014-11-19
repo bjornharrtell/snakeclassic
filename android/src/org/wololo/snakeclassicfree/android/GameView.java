@@ -1,4 +1,4 @@
-package org.wololo.snakeclassic.android;
+package org.wololo.snakeclassicfree.android;
 
 import org.wololo.snakeclassic.core.Game;
 import org.wololo.snakeclassic.vmlayer.BitmapFactory;
@@ -39,8 +39,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		surfaceHolder = getHolder();
 		surfaceHolder.addCallback(this);
 
-		SharedPreferences settings = context
-				.getSharedPreferences(PREFS_NAME, 0);
+		SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, 0);
 		int highscore = settings.getInt("highscore", 0);
 
 		game = new Game(this, highscore, bottomOffset);
@@ -125,9 +124,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 			Canvas canvas = null;
 			try {
 				canvas = surfaceHolder.lockCanvas(null);
-				canvas.drawBitmap((Bitmap) bitmap, 0, 0, null);
+				if (canvas != null)	canvas.drawBitmap((Bitmap) bitmap, 0, 0, null);
 			} finally {
-				surfaceHolder.unlockCanvasAndPost(canvas);
+				if (canvas != null) surfaceHolder.unlockCanvasAndPost(canvas);
 			}
 		}
 	}
@@ -153,8 +152,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	}
 
 	public void saveHighscore() {
-		SharedPreferences settings = context
-				.getSharedPreferences(PREFS_NAME, 0);
+		SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, 0);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putInt("highscore", game.highscore);
 		editor.commit();
